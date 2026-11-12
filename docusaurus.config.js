@@ -1,72 +1,74 @@
 // @ts-check
 // `@type` JSDoc annotations allow editor autocompletion and type checking
 // (when paired with `@ts-check`).
-// There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
-
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Manhddm Unity',
   tagline: 'Mỗi ngày một kiến thức Unity',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
-  // Set the production url of your site here
   url: 'https://manhddm.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Manhddm', // Usually your GitHub org/user name.
-  projectName: 'manhddm.github.io', // Usually your repo name.
+  organizationName: 'Manhddm',
+  projectName: 'manhddm.github.io',
 
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'vi',
     locales: ['vi'],
   },
+
+  // Tùy chọn Umami Analytics (nếu dùng Umami thay cho Google Analytics, chỉ cần bỏ comment dưới đây):
+  // scripts: [
+  //   {
+  //     src: 'https://cloud.umami.is/script.js',
+  //     defer: true,
+  //     'data-website-id': 'YOUR_UMAMI_WEBSITE_ID',
+  //   },
+  // ],
 
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: {
-          sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+        // Đã tắt hẳn tính năng docs theo lựa chọn ở Phase 1 & Phase 4
+        docs: false,
         blog: {
+          blogTitle: 'Blog lập trình Unity & C#',
+          blogDescription:
+            'Chia sẻ kiến thức thực tế về phát triển game với Unity, C#, kiến trúc phần mềm và tối ưu hóa.',
+          blogSidebarTitle: 'Bài viết gần đây',
+          blogSidebarCount: 'ALL',
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
+          editUrl: 'https://github.com/Manhddm/manhddm.github.io/tree/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
         },
+        // Google Analytics 4 (điền mã G-XXXXXXXXXX thật hoặc đặt biến môi trường GA_TRACKING_ID)
+        ...(process.env.GA_TRACKING_ID
+          ? {
+              gtag: {
+                trackingID: process.env.GA_TRACKING_ID,
+                anonymizeIP: true,
+              },
+            }
+          : {}),
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -74,30 +76,68 @@ const config = {
     ],
   ],
 
+  plugins: [
+    function docsClientShimPlugin() {
+      return {
+        name: 'docs-client-shim-plugin',
+        configureWebpack() {
+          return {
+            resolve: {
+              alias: {
+                '@docusaurus/plugin-content-docs/client': require.resolve(
+                  './src/shims/docsClientShim.js',
+                ),
+              },
+            },
+          };
+        },
+      };
+    },
+  ],
+
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        hashed: true,
+        language: ['en'],
+        indexDocs: false,
+        indexBlog: true,
+        indexPages: true,
+        blogRouteBasePath: '/blog',
+        removeDefaultStemmer: true,
+        highlightSearchTermsOnTargetPage: true,
+      }),
+    ],
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/social-card.svg',
       colorMode: {
         respectPrefersColorScheme: true,
       },
+      // Cấu hình bình luận Giscus (GitHub Discussions)
+      giscus: {
+        repo: 'Manhddm/manhddm.github.io',
+        repoId: process.env.GISCUS_REPO_ID || '', // Điền R_kgDO... từ https://giscus.app/vi
+        category: 'General',
+        categoryId: process.env.GISCUS_CATEGORY_ID || '', // Điền DIC_kwDO... từ https://giscus.app/vi
+      },
       navbar: {
-        title: 'Manhdddm',
+        title: 'Manhddm',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'Đồng Đức Mạnh Logo',
+          src: 'img/avatar.png',
         },
         items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Tutorial',
-          },
           {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/projects', label: 'Dự án', position: 'left'},
+          {to: '/about', label: 'Giới thiệu', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Manhddm',
             label: 'GitHub',
             position: 'right',
           },
@@ -107,46 +147,45 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Khám phá',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Trang chủ',
+                to: '/',
               },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              // {
-              //   label: 'Stack Overflow',
-              //   href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              // },
-              // {
-              //   label: 'Discord',
-              //   href: 'https://discordapp.com/invite/docusaurus',
-              // },
-              // {
-              //   label: 'X',
-              //   href: 'https://x.com/docusaurus',
-              // },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
               {
-                label: 'Blog',
+                label: 'Blog kỹ thuật',
                 to: '/blog',
               },
               {
+                label: 'Dự án Game (Portfolio)',
+                to: '/projects',
+              },
+              {
+                label: 'Giới thiệu (CV)',
+                to: '/about',
+              },
+            ],
+          },
+          {
+            title: 'Kết nối',
+            items: [
+              {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/Manhddm',
+              },
+              {
+                label: 'LinkedIn',
+                href: 'https://www.linkedin.com/in/m%E1%BA%A1nh-%C4%91%E1%BB%93ng-%C4%91%E1%BB%A9c-b2366b330',
+              },
+              {
+                label: 'Facebook',
+                href: 'https://web.facebook.com/dongducmanhyb',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Đồng Đức Mạnh (Manhddm). Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,

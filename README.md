@@ -1,43 +1,39 @@
-# Website
+# 🎮 Đồng Đức Mạnh — Unity Developer Blog & Portfolio
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Trang blog cá nhân và portfolio của **Đồng Đức Mạnh (Manhddm)**, chia sẻ kiến thức thực chiến về phát triển game với **Unity**, **C#**, **Kiến trúc phần mềm (Game Architecture)** và **Tối ưu hóa hiệu năng**.
 
-## Installation
+🌐 **Website:** [https://manhddm.github.io](https://manhddm.github.io)
+
+## 🚀 Công nghệ sử dụng
+
+- **Framework:** [Docusaurus 3](https://docusaurus.io/) (React 19)
+- **Tìm kiếm nội bộ:** `@easyops-cn/docusaurus-search-local`
+- **Bình luận:** [Giscus](https://giscus.app/) (GitHub Discussions)
+- **Triển khai:** GitHub Pages
+
+## 🛠️ Phát triển tại máy cục bộ (Local Development)
+
+Cài đặt các thư viện phụ thuộc:
 
 ```bash
 npm install
 ```
 
-**Note**: feel free to use the package manager of your choice.
-
-## Local Development
+Chạy server phát triển (tự động mở trình duyệt và hot-reload):
 
 ```bash
-npm run start
+npm start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
+Đóng gói bản build tĩnh (kiểm tra lỗi liên kết và tìm kiếm nội bộ):
 
 ```bash
 npm run build
+npm run serve
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+## 📬 Liên hệ
 
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true npm run deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> npm run deploy
-```
-
-If you are using GitHub Pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+- **GitHub:** [github.com/Manhddm](https://github.com/Manhddm)
+- **LinkedIn:** [Đồng Đức Mạnh](https://www.linkedin.com/in/m%E1%BA%A1nh-%C4%91%E1%BB%93ng-%C4%91%E1%BB%A9c-b2366b330)
+- **Facebook:** [dongducmanhyb](https://web.facebook.com/dongducmanhyb)

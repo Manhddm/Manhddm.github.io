@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1050" cy="120" r="260" fill="#2563eb" opacity="0.12" />
+  <circle cx="150" cy="530" r="220" fill="#06b6d4" opacity="0.1" />
+  <rect x="80" y="80" width="1040" height="470" rx="28" fill="#1e293b" stroke="#334155" stroke-width="2" opacity="0.85" />
+  <rect x="140" y="150" width="84" height="84" rx="20" fill="url(#accent)" />
+  <path d="M160 214V170h9.5l12.5 20 12.5-20h9.5v44h-9V186l-11 17.5h-4L169 186v28h-9z" fill="#ffffff" />
+  <text x="250" y="195" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="30" font-weight="700" fill="#38bdf8">manhddm.github.io</text>
+  <text x="250" y="228" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="22" fill="#94a3b8">Unity Game Developer Blog &amp; Portfolio</text>
+  <text x="140" y="330" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="64" font-weight="800" fill="#f8fafc">Đồng Đức Mạnh</text>
+  <text x="140" y="395" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="32" font-weight="500" fill="#cbd5e1">Chia sẻ kiến thức thực chiến về Unity, C#, Game Architecture &amp; Tối ưu hóa</text>
+  <rect x="140" y="445" width="140" height="44" rx="22" fill="#1d4ed8" opacity="0.35" />
+  <text x="210" y="474" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="600" fill="#60a5fa">#Unity3D</text>
+  <rect x="300" y="445" width="120" height="44" rx="22" fill="#0e7490" opacity="0.35" />
+  <text x="360" y="474" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="600" fill="#22d3ee">#CSharp</text>
+  <rect x="440" y="445" width="230" height="44" rx="22" fill="#334155" opacity="0.6" />
+  <text x="555" y="474" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="600" fill="#e2e8f0">#GameArchitecture</text>
+</svg>

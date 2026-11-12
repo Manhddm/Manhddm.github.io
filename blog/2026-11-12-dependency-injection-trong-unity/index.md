@@ -27,11 +27,13 @@ public class PlayerHealth : MonoBehaviour
 }
 ```
 
-Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm** thứ nó cần. Hệ quả:
+Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm dependency** thông qua
+`AudioManager.Instance`. Nó không chỉ biết API cần gọi là `PlaySfx`, mà còn biết
+class cụ thể `AudioManager` và cơ chế truy cập Singleton. Hệ quả:
 
-- **Hidden dependency:** nhìn vào Inspector hay class signature, không ai biết `PlayerHealth` cần `AudioManager`. Chỉ khi đọc từng dòng code mới phát hiện ra.
+- **Hidden dependency:** nhìn vào Inspector hay class signature, không ai biết `PlayerHealth` cần một audio service. Chỉ khi đọc từng dòng code mới phát hiện ra.
 - **Khó test:** muốn test `TakeDamage` thì phải có một `AudioManager` thật trong scene.
-- **Khó thay đổi:** muốn đổi sang hệ thống âm thanh khác (FMOD, Wwise…) thì phải sửa mọi nơi gọi `AudioManager.Instance`.
+- **Khó thay đổi:** nếu chỉ thay implementation bên trong `AudioManager` thì caller không cần sửa. Nhưng nếu thay hẳn `AudioManager` bằng một service khác, mọi nơi gọi `AudioManager.Instance` đều phải biết và thay đổi theo.
 
 ## 2. Dependency Injection là gì?
 
@@ -39,11 +41,13 @@ Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm** thứ nó cần.
 
 > **Một class không tự tạo hay tự đi tìm thứ nó cần. Thứ đó được "đưa vào" từ bên ngoài.**
 
-"Thứ nó cần" gọi là **dependency** (phụ thuộc). "Đưa vào" gọi là **injection** (tiêm). Thay vì `PlayerHealth` tự gọi `AudioManager.Instance`, sẽ có ai đó đưa cho nó một đối tượng phát âm thanh.
+"Thứ nó cần" gọi là **dependency** (phụ thuộc). "Đưa vào" gọi là **injection** (tiêm). Thay vì `PlayerHealth` tự lấy service qua `AudioManager.Instance`, một nơi bên ngoài sẽ chọn implementation phù hợp và đưa cho nó một đối tượng có khả năng phát âm thanh.
 
-Thú vị là bạn **đã dùng DI rồi** mà không biết: mỗi lần kéo thả một object vào trường `[SerializeField]` trong Inspector, đó chính là injection. Unity là bên "inject" dependency vào component của bạn.
+Thú vị là bạn **đã dùng DI rồi** mà không biết: mỗi lần kéo thả một object vào trường `[SerializeField]` trong Inspector, dependency được cung cấp từ bên ngoài thay vì class tự đi tìm. Cách này thường gọi là **Inspector injection**: bạn chọn reference trong Editor, Unity lưu và khôi phục nó qua hệ thống serialization.
 
-## 3. Bước 1: phụ thuộc vào interface, không phụ thuộc vào class cụ thể
+## 3. Bước 1: tách dependency khỏi implementation cụ thể
+
+DI **không bắt buộc** phải có interface: một constructor nhận `AudioService` cụ thể vẫn là DI, vì dependency được đưa vào từ bên ngoài. Nhưng kết hợp DI với abstraction (interface hoặc abstract class) giúp thay implementation và viết test dễ hơn nhiều, nên ta tạo một interface:
 
 ```csharp
 public interface IAudioService
@@ -71,7 +75,7 @@ Giờ `PlayerHealth` chỉ cần biết "có thứ gì đó phát được âm t
 
 ## 4. Bước 2: inject dependency vào MonoBehaviour
 
-MonoBehaviour **không có constructor** (Unity tự tạo nó), nên ta dùng **method injection**: một hàm `Construct` nhận dependency.
+Về mặt C#, MonoBehaviour vẫn có constructor, nhưng **Unity** mới là bên gọi nó (khi `AddComponent`, khi load scene hay prefab), nên bạn không truyền tham số vào được và cũng không nên khởi tạo gì trong đó. Vì vậy với MonoBehaviour ta dùng **method injection**: một hàm `Construct` nhận dependency.
 
 ```csharp
 using UnityEngine;
@@ -95,6 +99,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (amount <= 0) return; // sát thương âm không được phép hồi máu
+
         _hp = Mathf.Max(_hp - amount, 0);
         _audio.PlaySfx("hit");
     }
@@ -102,6 +108,8 @@ public class PlayerHealth : MonoBehaviour
 ```
 
 Tại sao không dùng `[SerializeField] IAudioService`? Vì Inspector của Unity **không serialize được interface** theo mặc định. Hàm `Construct` là cách đơn giản nhất để vượt qua giới hạn này.
+
+> **Lưu ý:** `[SerializeReference]` có hỗ trợ field kiểu interface, nhưng chỉ cho object C# thường. Nó **không** giữ được reference tới object kế thừa `UnityEngine.Object` như MonoBehaviour hay ScriptableObject, nên không giúp được trường hợp `AudioService` ở trên.
 
 ## 5. Bước 3: Composition Root, nơi "lắp ráp" mọi thứ
 
@@ -118,14 +126,42 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
+        // Kiểm tra qua kiểu AudioService (không phải IAudioService) để dùng toán tử == của Unity:
+        // field chưa gán trong Editor là một "fake null" mà phép so sánh qua interface không phát hiện được.
+        if (audioService == null || player == null)
+        {
+            Debug.LogError("GameInstaller: chưa gán đủ reference trong Inspector.", this);
+            return;
+        }
+
         player.Construct(audioService);
     }
 }
 ```
 
-Lưu ý `[DefaultExecutionOrder(-100)]`: nó đảm bảo `GameInstaller.Awake` chạy **trước** các script khác, để khi `PlayerHealth` bắt đầu hoạt động, dependency đã sẵn sàng. Quên dòng này là nguồn gốc của rất nhiều `NullReferenceException` khó hiểu.
+Kiểm tra null đặt ở Installer là **fail-fast**: thiếu reference thì báo lỗi ngay khi vào scene, chỉ đúng object bị thiếu, thay vì đợi tới lúc nhân vật trúng đòn mới văng `NullReferenceException`.
 
-Giờ mọi mối quan hệ giữa các hệ thống nằm gọn trong **một file**. Muốn đổi hệ thống âm thanh? Chỉ sửa `GameInstaller`.
+Về `[DefaultExecutionOrder(-100)]`: với các object có sẵn trong scene, Unity gọi `Awake` của mọi script trước `Start`, nên nếu `PlayerHealth` chỉ dùng `_audio` từ `Start` trở đi (như ví dụ trên, `Awake` của nó không đụng tới `_audio`) thì inject trong `GameInstaller.Awake` là đủ. Attribute này chỉ cần khi component **dùng dependency ngay trong `Awake`**: nó cho `GameInstaller` chạy trước các script có execution order mặc định (0). Nó không phải "luôn chạy trước tất cả": script có order nhỏ hơn -100 vẫn chạy trước nó.
+
+Giờ việc khởi tạo và kết nối dependency tập trung tại **một nơi**. Muốn thay `AudioService` bằng implementation khác, bạn chỉ sửa phần cấu hình ở Composition Root (kiểu field và reference được gán), thay vì sửa mọi class đang dùng audio. Trong ví dụ nhỏ này một `GameInstaller` là đủ; dự án lớn thường chia thành nhiều Installer theo từng phạm vi (scene, hệ thống gameplay…).
+
+### Object tạo lúc runtime bằng `Instantiate`
+
+Đây là chỗ hay vấp: `Instantiate` gọi `Awake` và `OnEnable` của prefab **ngay bên trong** lệnh `Instantiate`, tức là **trước** khi bạn kịp gọi `Construct`:
+
+```csharp
+var player = Instantiate(playerPrefab); // Awake + OnEnable đã chạy xong ở đây
+player.Construct(audioService);         // quá muộn nếu Awake/OnEnable cần _audio
+```
+
+`Start` thì chạy sau, nên dùng dependency từ `Start` trở đi là an toàn. Nếu bắt buộc phải dùng trong `Awake`/`OnEnable`, hãy tạo object dưới một parent đang tắt, inject, rồi mới đưa nó ra:
+
+```csharp
+// inactiveRoot là một GameObject đang SetActive(false)
+var player = Instantiate(playerPrefab, inactiveRoot); // chưa active → Awake/OnEnable chưa chạy
+player.Construct(audioService);
+player.transform.SetParent(null);                     // active trong scene → Awake/OnEnable chạy, _audio đã có
+```
 
 ## 6. Với class C# thuần: constructor injection
 
@@ -134,7 +170,7 @@ Logic game không cần là MonoBehaviour. Với class C# thường, cách DI ch
 ```csharp
 public interface IRandomProvider
 {
-    float Value { get; }
+    float Value { get; } // trong khoảng [0, 1]
 }
 
 public class UnityRandomProvider : IRandomProvider
@@ -148,9 +184,10 @@ public class DamageCalculator
 
     public DamageCalculator(IRandomProvider random)
     {
-        _random = random;
+        _random = random ?? throw new System.ArgumentNullException(nameof(random));
     }
 
+    // critChance trong khoảng [0, 1]
     public int Calculate(int baseDamage, float critChance)
     {
         return _random.Value < critChance ? baseDamage * 2 : baseDamage;
@@ -158,7 +195,9 @@ public class DamageCalculator
 }
 ```
 
-`readonly` + constructor đảm bảo `DamageCalculator` **không bao giờ** tồn tại mà thiếu dependency. Đây là dạng DI an toàn nhất.
+Constructor kèm kiểm tra null đảm bảo `DamageCalculator` không thể được tạo ra trong trạng thái thiếu dependency (`new DamageCalculator(null)` sẽ ném lỗi ngay). Còn `readonly` đảm bảo dependency không bị gán lại sau đó. Kết hợp hai thứ này là dạng DI an toàn nhất.
+
+> Chi tiết nhỏ: `UnityEngine.Random.value` có thể trả về **đúng** `1.0`, nên với `critChance = 1f` vẫn có một xác suất cực nhỏ không ra crit. Với ví dụ minh họa thì không đáng kể; nếu cần chính xác tuyệt đối, hãy quy định `Value` nằm trong `[0, 1)` và cho implementation tuân thủ điều đó.
 
 ## 7. Phần thưởng lớn nhất: viết được unit test
 
@@ -190,7 +229,7 @@ public class DamageCalculatorTests
 }
 ```
 
-Không cần mở scene, không cần nhấn Play, không phụ thuộc vào may rủi. Test chạy trong vài mili giây.
+Không cần mở scene, không cần nhấn Play, không phụ thuộc vào may rủi. Test chạy rất nhanh vì không cần khởi tạo scene, GameObject hay chạy gameplay.
 
 ## 8. Những lỗi thường gặp
 
@@ -201,7 +240,7 @@ Không cần mở scene, không cần nhấn Play, không phụ thuộc vào may
 
 ## 9. Khi dự án lớn hơn: DI framework
 
-Khi số lượng dependency tăng lên, việc tự viết `Construct` cho từng object sẽ mệt. Lúc đó có thể cân nhắc các DI container phổ biến trong cộng đồng Unity như **VContainer**, **Zenject/Extenject** hoặc **Reflex**. Chúng tự động hóa đúng những gì bạn vừa làm thủ công ở trên.
+Khi số lượng dependency tăng lên, việc tự viết `Construct` cho từng object sẽ mệt. Lúc đó có thể cân nhắc các DI container phổ biến trong cộng đồng Unity như **VContainer**, **Zenject/Extenject** hoặc **Reflex**. Chúng tự động hóa những gì bạn vừa làm thủ công ở trên, đồng thời quản lý thêm lifetime (singleton, transient…), scope theo scene và cả đồ thị object phức tạp.
 
 Lời khuyên: hãy hiểu cách làm thủ công trước. Khi đã nắm được Composition Root và các kiểu injection, bạn sẽ dùng framework một cách có chủ đích thay vì "phép thuật".
 
