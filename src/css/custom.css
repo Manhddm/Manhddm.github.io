@@ -137,7 +137,16 @@ body {
   position: sticky;
   top: 14px;
   z-index: 1000;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
+
+/* Ẩn hoàn toàn cả khoảng cách top: 14px khi cuộn xuống */
+.navbar[class*='navbarHidden'] {
+  transform: translate3d(0, calc(-100% - 28px), 0) !important;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .navbar__brand {

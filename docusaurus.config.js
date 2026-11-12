@@ -127,6 +127,7 @@ const config = {
         categoryId: 'DIC_kwDOVsCsrM4DK_Cj',
       },
       navbar: {
+        hideOnScroll: true,
         title: 'Manhddm',
         logo: {
           alt: 'Đồng Đức Mạnh Logo',
