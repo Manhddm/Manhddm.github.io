@@ -1,0 +1,19 @@
+unity:
+  label: Unity
+  permalink: /unity
+  description: Kiến thức về Unity Engine
+
+csharp:
+  label: C#
+  permalink: /csharp
+  description: Ngôn ngữ C# trong phát triển game
+
+architecture:
+  label: Kiến trúc
+  permalink: /architecture
+  description: Kiến trúc phần mềm và design pattern
+
+dependency-injection:
+  label: Dependency Injection
+  permalink: /dependency-injection
+  description: Kỹ thuật Dependency Injection
