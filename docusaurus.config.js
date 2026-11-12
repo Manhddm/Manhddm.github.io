@@ -122,9 +122,9 @@ const config = {
       // Cấu hình bình luận Giscus (GitHub Discussions)
       giscus: {
         repo: 'Manhddm/manhddm.github.io',
-        repoId: process.env.GISCUS_REPO_ID || '', // Điền R_kgDO... từ https://giscus.app/vi
+        repoId: 'R_kgDOVsCsrA',
         category: 'General',
-        categoryId: process.env.GISCUS_CATEGORY_ID || '', // Điền DIC_kwDO... từ https://giscus.app/vi
+        categoryId: 'DIC_kwDOVsCsrM4DK_Cj',
       },
       navbar: {
         title: 'Manhddm',

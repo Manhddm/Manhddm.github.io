@@ -1,75 +1,335 @@
 /**
- * Global styles & Infima theme overrides for Manhddm Unity Blog
+ * Phong cách giao diện kế thừa từ template althruist/Portfolio (Apache 2.0)
+ * Đã tối ưu cho Docusaurus 3 (Light & Dark Mode) — không bị lỗi sọc compositing hay tràn TOC
  */
 
+@font-face {
+  font-family: 'Rubik';
+  font-display: swap;
+  src: url('/fonts/Rubik.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lexend';
+  font-display: swap;
+  src: url('/fonts/Lexend.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Althite';
+  font-display: swap;
+  src: url('/fonts/Althite.woff2') format('woff2');
+}
+
 :root {
-  --ifm-color-primary: #2563eb;
-  --ifm-color-primary-dark: #1d4ed8;
-  --ifm-color-primary-darker: #1e40af;
-  --ifm-color-primary-darkest: #1e3a8a;
-  --ifm-color-primary-light: #3b82f6;
-  --ifm-color-primary-lighter: #60a5fa;
-  --ifm-color-primary-lightest: #93c5fd;
+  /* Biến màu gốc từ althruist/Portfolio (Light Mode) */
+  --color-basic: rgb(255, 255, 255);
+  --color-primary: rgb(69, 123, 214);
+  --color-secondary: rgb(255, 166, 1);
+  --color-code-text: rgb(20, 15, 7);
+  --color-code-title: rgb(18, 27, 85);
+  --color-background: rgb(228, 237, 255);
+  --color-card: rgba(255, 255, 255, 0.85);
+  --color-hovercard: rgba(242, 247, 255, 0.96);
+  --color-card-outline: rgba(196, 212, 240, 0.9);
+  --color-link: rgb(42, 112, 235);
+  --color-link-active: rgb(255, 166, 1);
+  --color-text: rgb(20, 19, 18);
+  --color-alt-text: rgba(83, 78, 73, 0.75);
+  --color-title-text: rgb(40, 47, 85);
+  --color-shadow: rgba(150, 185, 238, 0.4);
+  --color-button-unselected: rgba(211, 211, 211, 0.438);
+  --color-button-hover-selectable: rgba(218, 189, 146, 0.438);
+  --color-button-text-selected: rgb(83, 53, 28);
+
+  --radius-card: 20px;
+  --padding-card: 20px;
+
+  /* Đồng bộ sang hệ biến Infima của Docusaurus */
+  --ifm-navbar-height: 4.25rem;
+  --ifm-color-primary: #3b76db;
+  --ifm-color-primary-dark: #2865ce;
+  --ifm-color-primary-darker: #255fc2;
+  --ifm-color-primary-darkest: #1f4ea0;
+  --ifm-color-primary-light: #5287e0;
+  --ifm-color-primary-lighter: #5e8fe3;
+  --ifm-color-primary-lightest: #80a7e9;
+
+  --ifm-background-color: var(--color-background);
+  --ifm-background-surface-color: var(--color-card);
+  --ifm-font-color-base: var(--color-text);
+  --ifm-heading-color: var(--color-title-text);
+  --ifm-font-family-base: 'Lexend', 'Rubik', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Lexend', 'Althite', system-ui, -apple-system, sans-serif;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(37, 99, 235, 0.1);
-  --ifm-font-family-base: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgba(69, 123, 214, 0.14);
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: #38bdf8;
-  --ifm-color-primary-dark: #0ea5e9;
-  --ifm-color-primary-darker: #0284c7;
-  --ifm-color-primary-darkest: #0369a1;
-  --ifm-color-primary-light: #7dd3fc;
-  --ifm-color-primary-lighter: #bae6fd;
-  --ifm-color-primary-lightest: #e0f2fe;
-  --docusaurus-highlighted-code-line-bg: rgba(56, 189, 248, 0.15);
+  /* Biến màu gốc từ althruist/Portfolio (Dark Mode) */
+  --color-basic: rgb(0, 0, 0);
+  --color-primary: rgb(56, 116, 232);
+  --color-secondary: rgb(255, 108, 75);
+  --color-background: rgb(17, 25, 41);
+  --color-card: rgba(24, 35, 58, 0.88);
+  --color-hovercard: rgba(30, 44, 72, 0.96);
+  --color-code-text: rgb(180, 206, 255);
+  --color-code-title: rgb(123, 255, 176);
+  --color-card-outline: rgba(52, 76, 130, 0.78);
+  --color-link: rgb(140, 178, 255);
+  --color-link-active: rgb(255, 108, 75);
+  --color-text: rgb(255, 238, 221);
+  --color-alt-text: rgba(218, 207, 196, 0.75);
+  --color-title-text: rgb(202, 210, 255);
+  --color-shadow: rgba(5, 9, 32, 0.55);
+  --color-button-unselected: rgba(0, 0, 0, 0.438);
+  --color-button-hover-selectable: rgba(34, 11, 5, 0.699);
+  --color-button-text-selected: rgb(70, 31, 25);
+
+  /* Đồng bộ sang hệ biến Infima của Docusaurus (Dark) */
+  --ifm-color-primary: #6ea2ff;
+  --ifm-color-primary-dark: #4c8cff;
+  --ifm-color-primary-darker: #3b81ff;
+  --ifm-color-primary-darkest: #085fff;
+  --ifm-color-primary-light: #90b8ff;
+  --ifm-color-primary-lighter: #a1c3ff;
+  --ifm-color-primary-lightest: #d4e4ff;
+
+  --ifm-background-color: var(--color-background);
+  --ifm-background-surface-color: var(--color-card);
+  --ifm-font-color-base: var(--color-text);
+  --ifm-heading-color: var(--color-title-text);
+  --docusaurus-highlighted-code-line-bg: rgba(110, 162, 255, 0.16);
 }
 
-/* Bo tròn avatar trên Navbar */
+/* Nền trang & vùng bôi đen chữ đặc trưng của althruist */
+html,
+body {
+  background-color: var(--color-background) !important;
+  color: var(--color-text);
+  font-family: var(--ifm-font-family-base);
+  margin: 0;
+  padding: 0;
+}
+
+#__docusaurus {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+*::selection {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* Navbar nổi dạng viên thuốc kính mờ (Floating Glass Pill Header) */
+.navbar {
+  background-color: var(--color-card) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--color-card-outline);
+  border-radius: 999px;
+  box-shadow: 0 8px 28px var(--color-shadow);
+  width: min(92%, 1180px);
+  margin: 14px auto 0;
+  padding: 0.5rem 1.35rem;
+  position: sticky;
+  top: 14px;
+  z-index: 1000;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar__brand {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--color-title-text) !important;
+}
+
 .navbar__logo img {
   border-radius: 50%;
-  border: 2px solid var(--ifm-color-primary);
-  transition: transform 0.2s ease;
+  border: 2px solid var(--color-secondary);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .navbar__logo img:hover {
-  transform: scale(1.08);
+  transform: scale(1.12) rotate(-4deg);
 }
 
-/* Card & Badge dùng chung */
-.custom-card {
-  background: var(--ifm-card-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 12px;
-  padding: 1.5rem;
-  height: 100%;
+.navbar__item.navbar__link {
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.35rem 0.95rem;
+  margin: 0 0.15rem;
+  color: var(--color-title-text);
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navbar__item.navbar__link:hover,
+.navbar__item.navbar__link--active {
+  background-color: var(--color-title-text);
+  color: var(--color-background) !important;
+  transform: scale(0.95);
+}
+
+/* Căn chỉnh Sidebar trái & Mục lục (TOC) phải không bị đè bởi Floating Navbar */
+div[class^='tableOfContents_'],
+aside[class^='sidebar_'] {
+  top: calc(var(--ifm-navbar-height) + 28px) !important;
+}
+
+/* Thẻ Card có hiệu ứng nảy (Bounce Card) của althruist */
+.custom-card,
+.althruist-card {
+  position: relative;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-card-outline);
+  border-radius: var(--radius-card);
+  padding: var(--padding-card);
+  box-shadow: 0 8px 28px var(--color-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.25s ease;
 }
 
-.custom-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-  border-color: var(--ifm-color-primary);
+.custom-card:hover,
+.althruist-card:hover {
+  transform: scale(1.015) translateY(-3px);
+  box-shadow: 0 14px 36px var(--color-shadow);
+  border-color: var(--color-secondary);
 }
 
+/* Nút bấm tròn đầy đặn kiểu althruist Button.svelte */
+.althruist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border-radius: 25px;
+  border: none;
+  background-color: var(--color-primary);
+  color: #ffffff !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  box-shadow: 0 6px 20px var(--color-shadow);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.althruist-btn:hover {
+  background-color: var(--color-secondary);
+  color: rgb(25, 18, 12) !important;
+  transform: scale(0.95);
+}
+
+.althruist-btn:active {
+  transform: scale(0.88);
+}
+
+.althruist-btn--outline {
+  background-color: var(--color-card);
+  color: var(--color-title-text) !important;
+  border: 2px solid var(--color-card-outline);
+}
+
+.althruist-btn--outline:hover {
+  border-color: var(--color-secondary);
+  background-color: var(--color-secondary);
+  color: rgb(25, 18, 12) !important;
+}
+
+/* Nhãn Tag / Category theo chuẩn althruist */
 .skill-badge {
   display: inline-block;
-  padding: 0.35rem 0.75rem;
-  margin: 0.25rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-color-emphasis-800);
-  border: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.35rem 0.8rem;
+  margin: 0.2rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-card-outline);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-[data-theme='dark'] .skill-badge {
-  background: rgba(56, 189, 248, 0.12);
-  color: var(--ifm-color-primary-light);
-  border-color: rgba(56, 189, 248, 0.25);
+.skill-badge--featured {
+  background-color: var(--color-secondary) !important;
+  color: rgb(25, 18, 12) !important;
+  border-color: transparent;
+}
+
+/* Phong cách bài viết Blog & Code Block (không dùng backdrop-filter trên article dài để tránh lỗi sọc trắng) */
+main article {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-card-outline);
+  border-radius: var(--radius-card);
+  padding: 2.25rem;
+  box-shadow: 0 8px 28px var(--color-shadow);
+  margin-bottom: 2rem;
+}
+
+blockquote {
+  border-left: 5px solid var(--color-primary);
+  padding: 0.85rem 1.25rem;
+  margin: 1.25rem 0;
+  color: var(--color-text);
+  font-style: italic;
+  background-color: var(--color-background);
+  border-radius: 10px;
+}
+
+div[class^='codeBlockContainer'] {
+  border-radius: 14px !important;
+  border: 2px solid var(--color-primary) !important;
+  box-shadow: 0 5px 0 var(--color-primary) !important;
+  overflow: hidden;
+}
+
+hr {
+  border: none;
+  height: 4px;
+  width: 80%;
+  margin: 3rem auto;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* Footer nằm sát đáy trang, không dư khoảng trống bên dưới */
+.footer {
+  background-color: var(--color-card) !important;
+  border-top: 1px solid var(--color-card-outline);
+  color: var(--color-text) !important;
+  margin-top: auto;
+  padding: 2.5rem 0;
+}
+
+.footer__title {
+  color: var(--color-title-text) !important;
+  font-weight: 800;
+}
+
+.footer__link-item {
+  color: var(--color-text) !important;
+  font-weight: 600;
+}
+
+.footer__link-item:hover {
+  color: var(--color-secondary) !important;
+}
+
+@media screen and (max-width: 996px) {
+  .navbar {
+    width: 95%;
+    border-radius: 24px;
+  }
+  main article {
+    padding: 1.25rem;
+  }
 }

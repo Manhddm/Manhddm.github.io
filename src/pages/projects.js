@@ -8,38 +8,62 @@ export default function ProjectsPage() {
     <Layout
       title="Dự án Game - Đồng Đức Mạnh"
       description="Danh sách các dự án game Unity của Đồng Đức Mạnh.">
-      <main className="container margin-vert--xl" style={{maxWidth: '800px'}}>
-        <Heading as="h1" className="margin-bottom--md">
-          🎮 Dự án Game
+      <main
+        className="container margin-vert--xl"
+        style={{maxWidth: '820px'}}>
+        <Heading
+          as="h1"
+          style={{
+            textAlign: 'center',
+            fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)',
+            fontWeight: 800,
+            marginBottom: '2rem',
+          }}>
+          dự án nổi bật
         </Heading>
 
         <div
-          className="custom-card"
+          className="althruist-card"
           style={{
-            padding: '2.5rem',
+            padding: '3rem 2rem',
             textAlign: 'center',
           }}>
-          <p style={{fontSize: '1.15rem', marginBottom: '0.75rem', fontWeight: 600}}>
-            🚧 Các dự án đang được tổng hợp và cập nhật...
+          <p
+            style={{
+              fontSize: '1.3rem',
+              marginBottom: '0.75rem',
+              fontWeight: 800,
+              color: 'var(--color-title-text)',
+            }}>
+            🚧 các dự án đang được tổng hợp và cập nhật...
           </p>
           <p
             style={{
-              color: 'var(--ifm-color-emphasis-700)',
-              marginBottom: '1.5rem',
-              lineHeight: 1.7,
+              color: 'var(--color-alt-text)',
+              fontSize: '1.08rem',
+              maxWidth: '580px',
+              margin: '0 auto 2rem',
+              lineHeight: 1.75,
             }}>
-            Hiện tại tôi đang hoàn thiện tài liệu và hình ảnh cho các dự án cá nhân. Trong lúc chờ đợi, bạn
-            có thể xem các bài viết kỹ thuật trên Blog hoặc ghé thăm GitHub của tôi nhé!
+            Hiện tại mình đang hoàn thiện tài liệu và hình ảnh cho các dự án cá nhân.
+            Trong lúc chờ đợi, bạn có thể đọc các bài viết kỹ thuật trên Blog hoặc ghé
+            thăm GitHub của mình nhé!
           </p>
-          <div style={{display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap'}}>
-            <Link to="/blog" className="button button--primary">
-              📖 Đọc Blog
+          <div
+            style={{
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+            }}>
+            <Link to="/blog" className="althruist-btn">
+              đọc blog →
             </Link>
             <a
               href="https://github.com/Manhddm"
               target="_blank"
               rel="noopener noreferrer"
-              className="button button--outline button--primary">
+              className="althruist-btn althruist-btn--outline">
               GitHub (@Manhddm) ↗
             </a>
           </div>
