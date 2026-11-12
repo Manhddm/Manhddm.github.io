@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
 
 Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm** thứ nó cần. Hệ quả:
 
-- **Phụ thuộc ẩn:** nhìn vào Inspector hay chữ ký class, không ai biết `PlayerHealth` cần `AudioManager`. Chỉ khi đọc từng dòng code mới phát hiện ra.
+- **Hidden dependency:** nhìn vào Inspector hay class signature, không ai biết `PlayerHealth` cần `AudioManager`. Chỉ khi đọc từng dòng code mới phát hiện ra.
 - **Khó test:** muốn test `TakeDamage` thì phải có một `AudioManager` thật trong scene.
 - **Khó thay đổi:** muốn đổi sang hệ thống âm thanh khác (FMOD, Wwise…) thì phải sửa mọi nơi gọi `AudioManager.Instance`.
 
@@ -41,7 +41,7 @@ Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm** thứ nó cần.
 
 "Thứ nó cần" gọi là **dependency** (phụ thuộc). "Đưa vào" gọi là **injection** (tiêm). Thay vì `PlayerHealth` tự gọi `AudioManager.Instance`, sẽ có ai đó đưa cho nó một đối tượng phát âm thanh.
 
-Thú vị là bạn **đã dùng DI rồi** mà không biết: mỗi lần kéo thả một object vào trường `[SerializeField]` trong Inspector, đó chính là injection. Unity là người "tiêm" dependency vào component của bạn.
+Thú vị là bạn **đã dùng DI rồi** mà không biết: mỗi lần kéo thả một object vào trường `[SerializeField]` trong Inspector, đó chính là injection. Unity là bên "inject" dependency vào component của bạn.
 
 ## 3. Bước 1: phụ thuộc vào interface, không phụ thuộc vào class cụ thể
 
@@ -67,9 +67,9 @@ public class AudioService : MonoBehaviour, IAudioService
 }
 ```
 
-Giờ `PlayerHealth` chỉ cần biết "có thứ gì đó phát được âm thanh", không cần biết đó là `AudioService`, FMOD hay một bản giả để test.
+Giờ `PlayerHealth` chỉ cần biết "có thứ gì đó phát được âm thanh", không cần biết đó là `AudioService`, FMOD hay một **fake** để test.
 
-## 4. Bước 2: tiêm dependency vào MonoBehaviour
+## 4. Bước 2: inject dependency vào MonoBehaviour
 
 MonoBehaviour **không có constructor** (Unity tự tạo nó), nên ta dùng **method injection**: một hàm `Construct` nhận dependency.
 
