@@ -9,7 +9,6 @@ Nếu code của bạn đầy `AudioManager.Instance`, `GameManager.Instance` v�
 
 {/* truncate */}
 
-> **Môi trường:** Unity 6 · C# · Không dùng thư viện bên ngoài
 
 ## 1. Vấn đề: các class "bám dính" vào nhau
 
@@ -36,7 +35,7 @@ Trông vô hại, nhưng `PlayerHealth` đang **tự đi tìm** thứ nó cần.
 
 ## 2. Dependency Injection là gì?
 
-Ý tưởng cốt lõi chỉ có một câu:
+Ý tưởng cốt lõi:
 
 > **Một class không tự tạo hay tự đi tìm thứ nó cần. Thứ đó được "đưa vào" từ bên ngoài.**
 
