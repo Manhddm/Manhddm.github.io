@@ -187,6 +187,38 @@ aside[class^='sidebar_'] {
   top: calc(var(--ifm-navbar-height) + 28px) !important;
 }
 
+/* Mở rộng vùng đọc bài viết Blog trên desktop để code block & bảng biểu thoáng hơn */
+@media screen and (min-width: 997px) {
+  html.blog-wrapper .theme-layout-main > .container {
+    max-width: min(94vw, 1340px);
+  }
+
+  html.blog-post-page .theme-layout-main > .container {
+    max-width: min(96vw, 1580px);
+  }
+
+  html.blog-wrapper .theme-layout-main > .container > .row {
+    flex-wrap: nowrap;
+  }
+
+  html.blog-wrapper .theme-layout-main > .container > .row > aside.col {
+    flex: 0 0 clamp(195px, 15vw, 235px);
+    max-width: clamp(195px, 15vw, 235px);
+  }
+
+  html.blog-wrapper .theme-layout-main > .container > .row > main.col {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: none;
+    margin-left: 0;
+  }
+
+  html.blog-wrapper .theme-layout-main > .container > .row > div.col.col--2 {
+    flex: 0 0 clamp(210px, 16vw, 250px);
+    max-width: clamp(210px, 16vw, 250px);
+  }
+}
+
 /* Thẻ Card có hiệu ứng nảy (Bounce Card) của althruist */
 .custom-card,
 .althruist-card {
