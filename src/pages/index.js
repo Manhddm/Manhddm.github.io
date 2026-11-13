@@ -92,11 +92,18 @@ function HeroSection() {
 
         <div className={styles.heroAvatarWrap}>
           <div className={styles.heroAvatarCard}>
-            <img
-              src="/img/avatar.png"
-              alt="Đồng Đức Mạnh"
-              className={styles.heroAvatar}
-            />
+            <div className={styles.heroAvatarInner}>
+              <img
+                src="/img/avatar.png"
+                alt="Đồng Đức Mạnh (Pixel Avatar)"
+                className={clsx(styles.heroAvatar, styles.heroAvatarPixel)}
+              />
+              <img
+                src="/img/avatar-real.jpg"
+                alt="Đồng Đức Mạnh"
+                className={clsx(styles.heroAvatar, styles.heroAvatarReal)}
+              />
+            </div>
           </div>
         </div>
       </div>

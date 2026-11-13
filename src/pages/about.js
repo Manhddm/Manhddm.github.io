@@ -43,7 +43,7 @@ export default function AboutPage() {
                   boxShadow: '0 14px 32px var(--color-shadow)',
                 }}>
                 <img
-                  src="/img/avatar.png"
+                  src="/img/avatar-real.jpg"
                   alt="Đồng Đức Mạnh"
                   style={{
                     width: '100%',
