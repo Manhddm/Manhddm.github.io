@@ -17,3 +17,8 @@ dependency-injection:
   label: Dependency Injection
   permalink: /dependency-injection
   description: Kỹ thuật Dependency Injection
+
+unitask:
+  label: UniTask
+  permalink: /unitask
+  description: Sử dụng UniTask trong Unity để xử lý bất đồng bộ
